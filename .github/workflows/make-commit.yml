@@ -1,0 +1,33 @@
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+name: 'commitment'
+
+jobs:
+  commitment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+          persist-credentials: false
+          fetch-depth: 0
+      
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      
+      - name: 'make commits'
+        run: |
+          git config --local user.email "didactic.fortnight@gmail.com"
+          git config --local user.name "Jake Thompson"
+          Rscript --vanilla -f make-commits.R
+      
+      - name: 'push commits'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          force: 'true'
+          branch: 'main'
