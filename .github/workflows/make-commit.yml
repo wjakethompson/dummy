@@ -23,7 +23,7 @@ jobs:
         run: |
           git config --local user.email "didactic.fortnight@gmail.com"
           git config --local user.name "Jake Thompson"
-          Rscript --vanilla -f make-commits.R
+          Rscript make-commits.R
       
       - name: 'push commits'
         uses: ad-m/github-push-action@master
